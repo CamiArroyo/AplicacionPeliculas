@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RespuestaMDB } from '../interfaces/interfaces';
+import { RespuestaMDB, PeliculaDetalle, RespuestaCredits } from '../interfaces/interfaces';
 import { environment } from '../../environments/environment';
 
 const URL = environment.url;
@@ -11,6 +11,8 @@ const apiKey = environment.apiKey;
 })
 
 export class MoviesService {
+
+  private popularesPage = 0;
 
   //para hacer peticiones HTTP necesito importar "HttpClientModule" en el "app.module.ts"
   constructor( private http: HttpClient ) { }
@@ -26,7 +28,11 @@ export class MoviesService {
   //para el tercer slide
   getPopulares() {
 
-    const query = '/discover/movie?sort_by=popularity.desc';
+    //voy a incrementar en 1 el número de página -> la primera vez es 0+1=1
+    this.popularesPage++;
+
+    //para indicar qué página quiero solo debo mandar un argumento "page" al servicio
+    const query = `/discover/movie?sort_by=popularity.desc&page=${ this.popularesPage }`;
 
     //definimos acá que el tipo de respuesta es "<RespuestaMDB>"
     return this.ejecutarQuery<RespuestaMDB>(query);
@@ -52,8 +58,21 @@ export class MoviesService {
     const inicio = `${ hoy.getFullYear() }-${ mesString }-01`
     const fin    = `${ hoy.getFullYear() }-${ mesString }-${ ultimoDia }`
 
-    //definimos acá que el tipo de respuesta es "<RespuestaMDB>"
+    //definimos acá que el tipo de respuesta es "<RespuestaMDB>" -> ver "interfaces"
     return this.ejecutarQuery<RespuestaMDB>(`/discover/movie?primary_release_date.gte=${ inicio }&primary_release_date.lte=${ fin }`);
   }
 
+
+  //para obtener el detalle de la película
+  getPeliculaDetalle( id: string ) {
+    //definimos acá que el tipo de respuesta es "<PeliculaDetalle>" -> ver "interfaces"
+    return this.ejecutarQuery<PeliculaDetalle>(`/movie/${ id }?a=1`); //le agregamos "?a=1"
+  }
+
+
+  //para obtener el detalle de los actores
+  getActoresPelicula( id: string ) {
+    //definimos acá que el tipo de respuesta es "<PeliculaDetalle>" -> ver "interfaces"
+    return this.ejecutarQuery<RespuestaCredits>(`/movie/${ id }/credits?a=1`); //le agregamos "?a=1" para que funcione bien el query
+  }
 }

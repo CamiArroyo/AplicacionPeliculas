@@ -31,6 +31,7 @@
   </ion-grid>
 
   <!-- Insertamos un componente: "components/slideshow-pares" -->
-  <app-slideshow-pares [peliculas]="populares"></app-slideshow-pares>
+  <app-slideshow-pares [peliculas]="populares"
+                        (cargarMas)="cargarMas()"></app-slideshow-pares> <!-- Vamos a escuchar el "(cargarMas)" que viene desde "slideshow-pares" -->
 
 </ion-content>
