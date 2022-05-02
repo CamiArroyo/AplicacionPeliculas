@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RespuestaMDB, PeliculaDetalle, RespuestaCredits } from '../interfaces/interfaces';
+import { RespuestaMDB, PeliculaDetalle, RespuestaCredits, Genre } from '../interfaces/interfaces';
 import { environment } from '../../environments/environment';
 
 const URL = environment.url;
@@ -13,6 +13,7 @@ const apiKey = environment.apiKey;
 export class MoviesService {
 
   private popularesPage = 0;
+  generos: Genre[] = [];
 
   //para hacer peticiones HTTP necesito importar "HttpClientModule" en el "app.module.ts"
   constructor( private http: HttpClient ) { }
@@ -74,5 +75,30 @@ export class MoviesService {
   getActoresPelicula( id: string ) {
     //definimos acá que el tipo de respuesta es "<PeliculaDetalle>" -> ver "interfaces"
     return this.ejecutarQuery<RespuestaCredits>(`/movie/${ id }/credits?a=1`); //le agregamos "?a=1" para que funcione bien el query
+  }
+
+
+  //para buscar películas (tab2)
+  buscarPeliculas( texto: string ) {
+    return this.ejecutarQuery(`/search/movie?query=${ texto }`);
+  }
+
+
+  cargarGeneros(): Promise<Genre[]> {
+    //quiero manejarlo todo con promesas
+
+    return new Promise( resolve => {
+
+      this.ejecutarQuery(`/genre/movie/list?a=1`)
+        .subscribe( resp => {
+          this.generos = resp['genres'];
+          console.log(this.generos);
+          resolve(this.generos);
+      });
+
+    }
+    )
+
+
   }
 }

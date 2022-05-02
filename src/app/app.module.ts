@@ -10,13 +10,17 @@ import { AppComponent } from './app.component';
 //para hacer peticiones HTTP necesito importar esto
 import { HttpClientModule } from '@angular/common/http'
 
+//para trabajar con el Storage (para favoritos)
+import { IonicStorageModule } from '@ionic/storage-angular';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, 
             IonicModule.forRoot(), 
             AppRoutingModule,
-            HttpClientModule], //los "módulos" van acá
+            HttpClientModule,
+            IonicStorageModule.forRoot()], //los "módulos" van acá
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

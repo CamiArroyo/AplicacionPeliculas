@@ -17,7 +17,7 @@ export class SlideshowParesComponent implements OnInit {
     slideOpts = {
       slidesPerView: 2.2, //se va a mostrar uno, y un 10% del siguiente
       freeMode: true,
-      spaceBetween: -70,
+      spaceBetween: -5,
     }
 
   constructor( private modalCtrl: ModalController ) { }

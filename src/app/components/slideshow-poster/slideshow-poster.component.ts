@@ -14,7 +14,7 @@ export class SlideshowPosterComponent implements OnInit {
   @Input() peliculas: Pelicula[] = [];
 
   slideOpts = {
-    slidesPerView: 2.2, //se va a mostrar uno, y un 10% del siguiente
+    slidesPerView: 2.7, //se van a mostrar tres, y un 20% del siguiente
     freeMode: true,
   }
 
